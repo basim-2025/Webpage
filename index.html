@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login and Signup </title>
+  <style>
+    /* allthings to be center */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #ececff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .form-container {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      width: 400px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .form-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .form-header button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      background: #f5f5f5;
+      color: #000;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+      margin: 0 5px;
+    }
+    /* view blue btn when click class active  */
+
+    .form-header button.active {
+      background: linear-gradient(45deg, #007bff, #0056b3);
+      color: #fff;
+    }
+
+    form {
+      display: none;
+    }
+    /* view form only class active */
+    form.active {
+      display: block;
+    }
+
+    input {
+      width: 80%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    input[type="submit"]{
+      background: linear-gradient(45deg, #007bff, #0056b3);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    input[type="submit"]:hover {
+      background: linear-gradient(45deg, #0056b3, #003f7d);
+    }
+
+    a {
+      color: #007bff;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <!-- Header Buttons -->
+    <div class="form-header">
+      <button id="login-btn" class="active" onclick="showForm('login')">Login</button>
+      <button id="signup-btn" onclick="showForm('signup')">Signup</button>
+     
+    </div>
+
+    <!-- Login Form -->
+    <form id="login-form" class="active" onsubmit="return validate('login')">
+      <h2>Login Form</h2>
+      <input type="email" id="login-email" placeholder="Email Address">
+      <input type="password" id="login-password" placeholder="Password">
+      <p><a href="#">Forgot password?</a></p>
+      <input type="submit" value="Login">
+    </form>
+
+    <!-- Signup Form -->
+    <form id="signup-form" onsubmit="return validate('signup')">
+      <h2>Signup Form</h2>
+      <input type="email" id="signup-email" placeholder="Email Address">
+      <input type="password" id="signup-password" placeholder="Password">
+      <input type="password" id="confirmpassword" placeholder="Confirm Password">
+      <input type="submit" value="Signup">
+    </form>
+  </div>
+
+  <script>
+    function showForm(formType) {
+      const loginForm = document.getElementById('login-form');
+      const signupForm = document.getElementById('signup-form');
+      const loginBtn = document.getElementById('login-btn');
+      const signupBtn = document.getElementById('signup-btn');
+
+      if (formType === 'login') {
+        loginForm.classList.add('active');
+        signupForm.classList.remove('active');
+        loginBtn.classList.add('active');
+        signupBtn.classList.remove('active');
+      } else {
+        signupForm.classList.add('active');
+        loginForm.classList.remove('active');
+        signupBtn.classList.add('active');
+        loginBtn.classList.remove('active');
+      }
+    }
+
+    function validate(formType) {
+      let email, password, confirmPassword;
+
+      if (formType === 'login') {
+        email = document.getElementById("login-email").value;
+        password = document.getElementById("login-password").value;
+      } 
+      else {
+        email = document.getElementById("signup-email").value;
+        password = document.getElementById("signup-password").value;
+        confirmPassword = document.getElementById("confirmpassword").value;
+      }
+
+      if (email === "" || password === "" || (formType === 'signup' && confirmPassword === "")) {
+        alert("All fields must be filled out");
+        return false;
+      }
+
+      if (password.length < 8) {
+        alert("Password must be at least 8 characters long");
+        return false;
+      }
+
+      if (formType === 'signup' && password !== confirmPassword) {
+        alert("Passwords do not match");
+        return false;
+      }
+      
+      // Form submission successful
+      if (formType === 'signup') {
+        alert("Form submitted successfully");
+        
+        // Confirm if the user wants to switch to login form
+        const userConfirmed = confirm("Do you want to login now?");
+        
+        if (userConfirmed) {
+          showForm('login');
+        }
+        
+        return false; // Prevent form submission from reloading the page
+      }
+
+      return true; // Allow login form submission
+    }
+  </script>
+
+</body>
+</html>
